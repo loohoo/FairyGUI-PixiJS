@@ -1,7 +1,8 @@
 namespace fgui {
 
+
     export interface IColorableTitle {
-        titleColor: number;
+        titleColor: MixColor;
         fontSize: number;
     }
 

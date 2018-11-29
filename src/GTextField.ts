@@ -50,7 +50,7 @@ namespace fgui {
         protected $style: PIXI.TextStyle;
         protected $verticalAlign: VertAlignType = VertAlignType.Top;
         protected $offset: PIXI.Point = new PIXI.Point();
-        protected $color: number;
+        protected $color: MixColor;
         protected $singleLine:boolean = true;
 
         protected $text: string = "";
@@ -138,15 +138,15 @@ namespace fgui {
             return this.$text;
         }
 
-        public get color(): number {
+        public get color(): MixColor {
             return this.getColor();
         }
 
-        protected getColor():number {
+        protected getColor():MixColor {
             return this.$color;
         }
 
-        protected setColor(value:number):void {
+        protected setColor(value:MixColor):void {
             if (this.$color != value) {
                 this.$color = value;
                 this.updateGear(GearType.Color);
@@ -155,15 +155,15 @@ namespace fgui {
             }
         }
 
-        public set color(value: number) {
+        public set color(value: MixColor) {
             this.setColor(value);
         }
 
-        public get titleColor(): number {
+        public get titleColor(): MixColor {
             return this.color;
         }
 
-        public set titleColor(value: number) {
+        public set titleColor(value: MixColor) {
             this.color = value;
         }
         
@@ -692,7 +692,16 @@ namespace fgui {
                         bm.y = line.y + charIndent + Math.ceil(glyph.offsetY * fontScale);
                         bm.texture = glyph.texture;
                         bm.scale.set(fontScale, fontScale);
-                        bm.tint = this.$bitmapFont.colorable === true ? this.$color : 0xFFFFFF;
+
+                        if (this.$bitmapFont.colorable) {
+
+                            bm.tint = Array.isArray(this.$color) ? this.$color[0] : this.$color;
+
+                        } else {
+
+                            bm.tint = 0xFFFFFF;
+                        }
+
                         this.$btContainer.addChild(bm);
 
                         charX += letterSpacing + Math.ceil(glyph.advance * fontScale);
